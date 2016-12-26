@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+</body>
+<script type="text/tpl" id="plist">
+  <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>__selector</key>
+    <string>_rpc_getConnectedApplications:</string>
+    <key>__argument</key>
+    <dict>
+      <key>WIRConnectionIdentifierKey</key>
+      <string>3b417e9a-9635-4059-a63e-ca88c98744bf</string>
+    </dict>
+  </dict>
+</plist>
+</script>
+<script>
+  var devtool     = require('../index');
+  
+  var inspector = devtool.inspector({
+    type: 'local'
+  });
+
+  inspector.connect();
+  
+  inspector.on('applicationConnected', function (data) {
+    console.log(data)
+  })
+
+
+  inspector.once('applicationSentListing', function (data) {
+    var page = data.WIRListingKey,
+        keys = Object.keys(page);
+
+    /*if (keys.length > 0) {
+      debugger;
+      inspector.command({
+        method: 'Inspector.enable'
+      }, {
+        page: page[keys[0]].WIRPageIdentifierKey,
+        app: data.WIRApplicationIdentifierKey
+      });
+    }*/
+
+    inspector.listing('com.apple.mobilesafari');
+
+    inspector.once('applicationSentListing', function (data) {
+      var page = data.WIRListingKey,
+        keys = Object.keys(page);
+
+      inspector.connected()
+
+      if (keys.length > 0) {
+        //inspector.session(page[keys.pop()].WIRPageIdentifierKey);
+
+        inspector.command({
+          method: 'Inspector.enable'
+        });
+
+        inspector.command({
+          method: 'Runtime.evaluate',
+          expression: 'alert(1)'
+        });
+
+        inspector.on('applicationSentData', function () {
+          debugger;
+        })
+      }
+      
+    })
+  });
+
+</script>
+</html>

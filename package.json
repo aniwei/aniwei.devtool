@@ -1,0 +1,19 @@
+{
+  "name": "aniwei.ios",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aniwei",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^1.0.0",
+    "bplist-creator": "0.0.7",
+    "bplist-parser": "^0.1.1",
+    "list": "^0.8.2",
+    "lodash": "^4.17.2",
+    "uuid": "^2.0.3"
+  }
+}
